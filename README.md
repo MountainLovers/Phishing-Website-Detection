@@ -1,35 +1,58 @@
-## Phishing-Website-Detection
+## Phishing-Website-Detection 钓鱼网站检测
 
-Over the years there have been many attacks of Phishing and many people have lost huge sums of money by becoming a victim of phishing attack. In a phishing attack emails are sent to user claiming to be a legitimate organization, where in the email asks user to enter information like name, telephone, bank account number important passwords etc. such emails direct the user to a website where in user enters these personal information. These websites also known as phishing website now steal the entered user information and carries out
-illegal transactions thus causing harm to the user.Phishing website and their mails are sent to millions of users daily and thus are still a big concern for cyber security.
+网络钓鱼（phishing）是一种基于社会工程学的欺诈攻击行为，是一个长期存在、基于社交渠道的问题，每天都会影响多个细分市场以及各行各业的人。攻击者会尝试利用互联网使用者的天真制造一些具有诱惑性的网页、电子邮件等，通过发送大量欺骗性的 E-mai 和伪造的 WEB 地址链接或页面来进行诈骗活动，诱导使用者的不谨慎点击来非法获取他们的个人隐私信息及敏感财务数据，如个人姓名、手机号码、社交账号密码、身份证号码、银行账号甚至密码等。
+网络钓鱼网站及其邮件每天都发送给数百万个用户，因此仍然是网络安全的主要问题。
 
 
-### Overview of the project
+### 项目概括
 
-Phishing is one of the luring techniques used by phishing artist in the intention of exploiting the personal details of unsuspected users. Phishing website is a mock website that looks similar in appearance but different in destination. The unsuspected users post their data thinking that these websites come from trusted financial institutions. Several antiphishing techniques emerge continuously but phishers come with new technique by breaking all the antiphishing mechanisms. Hence there is a need for efficient mechanism for the prediction of phishing website.
+网络钓鱼是网络钓鱼攻击者使用的诱骗技术之一，目的是利用未经怀疑的用户的个人详细信息。仿冒网站是一个模拟的网站，其外观看起来与合法网站相似，但目的地不同。 用户毫无疑问地在钓鱼网站上发布了他们的数据，并认为这些网站来自受信任的金融机构。几种反网络钓鱼技术不断涌现，但是网络钓鱼者通过打破所有反网络钓鱼机制而带来了新技术。因此，需要一种有效的机制来预测网络钓鱼网站，以在点击网站之前能够确定该网站是否合法，避免用户误点钓鱼网站造成损失的事件发生。
 
-This project employs Machine-learning technique for modelling the prediction task and supervised learning algorithms namely Decision tree induction, Naïve bayes classification and Random Forest are used for exploring the results. 
+该项目采用机器学习技术对预测任务进行建模，并使用监督学习算法（即决策树归纳，朴素贝叶斯分类和随机森林）来预测结果。
 
-**Steps typically involved in this project**
-1. _Feature Extraction_
+**本项目主要涉及的步骤**
+
+1. _特征提取_
   
-2. _Data Preprocessing_
-    - Filtering the extracted features data.(Removing unnecessary columns for the training the model)
+2. _数据预处理_
+    - 过滤提取的特征数据。（删除不必要的列以训练模型）
 
-3. _Training the model_
+3. _训练模型_
    
-   1. Training the model with Decision Tree C5.0 algorithm
-     - Calculating the accuracy of the model
-   2. Training the model with Random Forest model 
-     - Calculating the accuracy of the model
-  By evaluating the performance of the model, choosing the best fit for this problem
+    1) 使用决策树C5.0算法训练模型
+      -计算模型的准确性
+   2) 使用随机森林模型训练模型
+      -计算模型的准确性
+   通过对比模型的准确性，评估模型的性能，选择最适合此问题的模型
   
-   **Any Classification Algorithm can be used such as SVM,KNN,Naive Bayes but we are testing only with Decision Tree C5.0 and Random     Forest because many citations on this project has stated that Random Forest is the best fit**
+   **可以使用例如SVM，KNN，朴素贝叶斯的分类算法，但我们仅在决策树C5.0和随机森林中进行测试。因为对该项目的许多引用都表明，随机森林最适合（？？？这句我有点不解，我的理解是随机森林是用来筛选无关特征并去掉的？？？）**
 
-4. _Evaluating the model and Testing the model_
-     - By providing input(url) either from desktop app or web-app,classifying whether it is legitimate or phishing
+4. _评估模型并测试模型_
+     - 通过在文件`suspicious_websites.csv`中输入待检测URL，对它是合法网站还是钓鱼网站进行分类
     
 
+**算法改进**
+
+1. 决策树算法进行的方法：
+
+    将已知为合法网址和钓鱼网址的文件合并，通过数据集和模型训练来将label进行预测，并计算预测的准确率
+
+2. 我们的改进：
+
+    1) 将待`suspicious_websites.csv`的检测网址（纯测试集，与模型训练所用的测试集无交叉）进行特征提取、数据预处理
+    
+    2) 使用决策树算法训练好的模型对`suspicious_websites.csv`的待检测网址的label进行预测
+    
+    3) 给出预测结果（label=0,Legal; label=1,Phishing; else ERROR）
+    
+        input => suspicious websites
+
+        output => Legal or Phishing or ERROR
+
+3. 模型评估：
+
+    提升是指给每个训练元组赋予权重，迭代地学习k个分类器序列，学习得到分类器Mi之后，更新权重，使得其后的分类器Mi+1“更关注”Mi误分的训练元组，最终提升的分类器M* 组合每个个体分类器，其中每个分类器投票的权重是其准确率的函数。
+    在提升的过程中，训练元组的权重根据它们的分类情况调整，如果元组不正确地分类，则它的权重增加，如果元组正确分类，则它的权重减少。元组的权重反映对它们分类的困难程度，权重越高，越可能错误的分类。根据每个分类器的投票，如果一个分类器的误差率越低，提升就赋予它越高的表决权重。在建立分类器的时候，让具有更高表决权重的分类器对具有更高权重的元组进行分类，这样，建立了一个互补的分类器系列。所以能够提高分类的准确性。
 
 
 

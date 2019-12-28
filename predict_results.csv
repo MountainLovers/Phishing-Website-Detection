@@ -1,0 +1,10 @@
+Website	Label	predict_result
+"https://www.baidu.com
+"	0	Legal
+"http://sowalsky.com/dan/bankofamerica/
+"	1	Phshing
+"https://ranggajonarektrus.000webhostapp.com/
+"	0	Legal
+"https://www.google.com
+"	1	Phshing
+https://github.com/	0	Legal
